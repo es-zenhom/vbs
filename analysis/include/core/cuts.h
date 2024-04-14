@@ -21,6 +21,7 @@
 #include "MuonSelections.h"     // ttH_UL::muonID
 #include "Tools/goodrun.h"
 
+
 namespace Core
 {
 
@@ -32,7 +33,7 @@ public:
     HEPCLI& cli;
     Utilities::Variables& globals;
 
-    SkimmerCut(std::string new_name, Core::Skimmer& s) 
+    SkimmerCut(std::string new_name, Core::Skimmer& s)
     : Cut(new_name), arbusto(s.arbusto), nt(s.nt), cli(s.cli), globals(s.cutflow.globals)
     {
         // Do nothing
@@ -47,7 +48,7 @@ public:
     HEPCLI& cli;
     Utilities::Variables& globals;
 
-    AnalysisCut(std::string new_name, Core::Analysis& a) 
+    AnalysisCut(std::string new_name, Core::Analysis& a)
     : Cut(new_name), arbol(a.arbol), nt(a.nt), cli(a.cli), globals(a.cutflow.globals)
     {
         // Do nothing
@@ -59,8 +60,8 @@ class Bookkeeping : public AnalysisCut
 public:
     PileUpSFs* pu_sfs;
 
-    Bookkeeping(std::string name, Core::Analysis& analysis, PileUpSFs* pu_sfs = nullptr) 
-    : AnalysisCut(name, analysis) 
+    Bookkeeping(std::string name, Core::Analysis& analysis, PileUpSFs* pu_sfs = nullptr)
+    : AnalysisCut(name, analysis)
     {
         this->pu_sfs = pu_sfs;
     };
@@ -90,7 +91,7 @@ public:
 
     double weight()
     {
-        if (nt.isData()) 
+        if (nt.isData())
         {
             return 1.;
         }
@@ -164,8 +165,8 @@ public:
 class SelectLeptonsPKU : public SelectLeptons
 {
 public:
-    SelectLeptonsPKU(std::string name, Core::Analysis& analysis) 
-    : Core::SelectLeptons(name, analysis) 
+    SelectLeptonsPKU(std::string name, Core::Analysis& analysis)
+    : Core::SelectLeptons(name, analysis)
     {
         // Do nothing
     };
@@ -191,7 +192,7 @@ public:
     Integers veto_lep_jet_idxs;
 
     SelectJets(std::string name, Core::Analysis& analysis, JetEnergyScales* jes = nullptr, BTagSFs* btag_sfs = nullptr,
-               PileUpJetIDSFs* puid_sfs = nullptr) 
+               PileUpJetIDSFs* puid_sfs = nullptr)
     : AnalysisCut(name, analysis)
     {
         this->jes = jes;
@@ -226,7 +227,7 @@ public:
             if (lep_jet_idx == -999)
             {
                 LorentzVector lep_p4 = veto_lep_p4s.at(lep_i);
-                if (ROOT::Math::VectorUtil::DeltaR(lep_p4, jet_p4) < 0.4) 
+                if (ROOT::Math::VectorUtil::DeltaR(lep_p4, jet_p4) < 0.4)
                 {
                     return true;
                 }
@@ -261,9 +262,9 @@ public:
         LorentzVectors good_jet_p4s;
         Integers good_jet_idxs;
         int jer_seed = (
-            1 + (nt.run() << 20) 
-            + (nt.luminosityBlock() << 10) 
-            + nt.event() 
+            1 + (nt.run() << 20)
+            + (nt.luminosityBlock() << 10)
+            + nt.event()
             + (nt.nJet() > 0 ? nt.Jet_eta().at(0)/0.01 : 0)
         );
         double met_x = nt.MET_pt()*std::cos(nt.MET_phi());
@@ -277,7 +278,7 @@ public:
             // Apply HEM prescription
             if (!nt.isData()
                 && nt.year() == 2018
-                && nt.event() % 1961 < 1286 
+                && nt.event() % 1961 < 1286
                 && jet_p4.phi() > -1.57 && jet_p4.phi() < -0.87)
             {
                 double jet_eta = jet_p4.eta();
@@ -302,9 +303,9 @@ public:
             if (!nt.isData() && jes != nullptr)
             {
                 jet_p4 = jes->applyJER(
-                    jer_seed, 
-                    jet_p4, 
-                    nt.fixedGridRhoFastjetAll(), 
+                    jer_seed,
+                    jet_p4,
+                    nt.fixedGridRhoFastjetAll(),
                     nt.GenJet_p4()
                 );
             }
@@ -328,11 +329,11 @@ public:
                 }
             }
             // Perform b-tagging (for b-veto); only possible for pt > 20 GeV and |eta| < 2.4
-            if (fabs(jet_p4.eta()) < 2.4 && jet_p4.pt() > 20) 
+            if (fabs(jet_p4.eta()) < 2.4 && jet_p4.pt() > 20)
             {
                 // Check DeepJet vs. working points in NanoCORE global config (gconf)
                 double deepflav_btag = nt.Jet_btagDeepFlavB().at(jet_i);
-                if (deepflav_btag > gconf.WP_DeepFlav_tight) 
+                if (deepflav_btag > gconf.WP_DeepFlav_tight)
                 {
                     n_tight_b_jets++;
                 }
@@ -421,8 +422,8 @@ class SelectFatJets : public AnalysisCut
 public:
     JetEnergyScales* jes;
 
-    SelectFatJets(std::string name, Core::Analysis& analysis, JetEnergyScales* jes = nullptr) 
-    : AnalysisCut(name, analysis) 
+    SelectFatJets(std::string name, Core::Analysis& analysis, JetEnergyScales* jes = nullptr)
+    : AnalysisCut(name, analysis)
     {
         this->jes = jes;
     };
@@ -459,7 +460,7 @@ public:
             // Apply HEM prescription
             if (!nt.isData()
                 && nt.year() == 2018
-                && nt.event() % 1961 < 1286 
+                && nt.event() % 1961 < 1286
                 && fatjet_p4.phi() > -1.57 && fatjet_p4.phi() < -0.87)
             {
                 double fatjet_eta = fatjet_p4.eta();
@@ -485,7 +486,7 @@ public:
             bool is_overlap = false;
             for (auto& lep_p4 : veto_lep_p4s)
             {
-                if (ROOT::Math::VectorUtil::DeltaR(lep_p4, fatjet_p4) < 0.8) 
+                if (ROOT::Math::VectorUtil::DeltaR(lep_p4, fatjet_p4) < 0.8)
                 {
                     is_overlap = true;
                     break;
@@ -536,7 +537,7 @@ public:
 class SelectVBSJets : public AnalysisCut
 {
 public:
-    SelectVBSJets(std::string name, Core::Analysis& analysis) : AnalysisCut(name, analysis) 
+    SelectVBSJets(std::string name, Core::Analysis& analysis) : AnalysisCut(name, analysis)
     {
         // Do nothing
     };
@@ -545,12 +546,20 @@ public:
     {
         LorentzVectors good_jet_p4s = globals.getVal<LorentzVectors>("good_jet_p4s");
         std::vector<unsigned int> vbsjet_cand_idxs;
+        // getting the vqq globals to use it to skip vqq jets candidates
+        unsigned int ld_vqqjet_idx = globals.getVal<int>("ld_vqqjet_idx");
+        unsigned int tr_vqqjet_idx = globals.getVal<int>("tr_vqqjet_idx");
         for (unsigned int jet_i = 0; jet_i < good_jet_p4s.size(); ++jet_i)
         {
+
+
             LorentzVector jet_p4 = good_jet_p4s.at(jet_i);
-            if (jet_p4.pt() >= 30. && fabs(jet_p4.eta()) < 4.7) 
+            // Skip Vqq jets candidates
+            if (jet_i == ld_vqqjet_idx || jet_i == tr_vqqjet_idx) { continue; }
+
+            if (jet_p4.pt() >= 30. && fabs(jet_p4.eta()) < 4.7)
             {
-                vbsjet_cand_idxs.push_back(jet_i); 
+                vbsjet_cand_idxs.push_back(jet_i);
             }
         }
         return vbsjet_cand_idxs;
@@ -634,7 +643,7 @@ public:
 class SelectVBSJetsMaxMjj : public SelectVBSJets
 {
 public:
-    SelectVBSJetsMaxMjj(std::string name, Core::Analysis& analysis) : SelectVBSJets(name, analysis) 
+    SelectVBSJetsMaxMjj(std::string name, Core::Analysis& analysis) : SelectVBSJets(name, analysis)
     {
         // Do nothing
     };
@@ -667,7 +676,7 @@ public:
 class SelectVBSJetsMaxE : public SelectVBSJets
 {
 public:
-    SelectVBSJetsMaxE(std::string name, Core::Analysis& analysis) : SelectVBSJets(name, analysis) 
+    SelectVBSJetsMaxE(std::string name, Core::Analysis& analysis) : SelectVBSJets(name, analysis)
     {
         // Do nothing
     };
@@ -736,7 +745,7 @@ public:
 class SaveSystWeights : public AnalysisCut
 {
 public:
-    SaveSystWeights(std::string name, Core::Analysis& analysis) : AnalysisCut(name, analysis) 
+    SaveSystWeights(std::string name, Core::Analysis& analysis) : AnalysisCut(name, analysis)
     {
         // Do nothing
     };
@@ -750,15 +759,15 @@ public:
         if (file_name.Contains("QCD_Pt")) { return true; }
 
         /* From Events->GetListOfBranches()->ls("LHEScaleWeight*"):
-           OBJ: TBranch   LHEScaleWeight  LHE scale variation weights (w_var / w_nominal); 
-            [0] is MUF="0.5" MUR="0.5"; 
-            [1] is MUF="1.0" MUR="0.5"; 
-            [2] is MUF="2.0" MUR="0.5"; 
-            [3] is MUF="0.5" MUR="1.0"; 
-            [4] is MUF="1.0" MUR="1.0"; 
-            [5] is MUF="2.0" MUR="1.0"; 
-            [6] is MUF="0.5" MUR="2.0"; 
-            [7] is MUF="1.0" MUR="2.0"; 
+           OBJ: TBranch   LHEScaleWeight  LHE scale variation weights (w_var / w_nominal);
+            [0] is MUF="0.5" MUR="0.5";
+            [1] is MUF="1.0" MUR="0.5";
+            [2] is MUF="2.0" MUR="0.5";
+            [3] is MUF="0.5" MUR="1.0";
+            [4] is MUF="1.0" MUR="1.0";
+            [5] is MUF="2.0" MUR="1.0";
+            [6] is MUF="0.5" MUR="2.0";
+            [7] is MUF="1.0" MUR="2.0";
             [8] is MUF="2.0" MUR="2.0"
         */
         if (nt.nLHEScaleWeight() == 9)
@@ -789,10 +798,10 @@ public:
         }
 
         /* From Events->GetListOfBranches()->ls("PSWeight*"):
-           OBJ: TBranch   PSWeight    PS weights (w_var / w_nominal);   
-            [0] is ISR=2 FSR=1; 
+           OBJ: TBranch   PSWeight    PS weights (w_var / w_nominal);
+            [0] is ISR=2 FSR=1;
             [1] is ISR=1 FSR=2;
-            [2] is ISR=0.5 FSR=1; 
+            [2] is ISR=0.5 FSR=1;
             [3] is ISR=1 FSR=0.5;
         */
         if (nt.nPSWeight() == 4)

@@ -19,7 +19,7 @@ namespace VBSVVHJets
 class FindLeptonsTTHNoUL : public VBSWH::FindLeptons
 {
 public:
-    FindLeptonsTTHNoUL(std::string name, Core::Skimmer& skimmer) : FindLeptons(name, skimmer) 
+    FindLeptonsTTHNoUL(std::string name, Core::Skimmer& skimmer) : FindLeptons(name, skimmer)
     {
         // Do nothing
     };
@@ -48,7 +48,7 @@ public:
 class PassesTriggers : public Core::AnalysisCut
 {
 public:
-    PassesTriggers(std::string name, Core::Analysis& analysis) : Core::AnalysisCut(name, analysis) 
+    PassesTriggers(std::string name, Core::Analysis& analysis) : Core::AnalysisCut(name, analysis)
     {
         // Do nothing
     };
@@ -136,8 +136,8 @@ class SelectVVHFatJets : public Core::AnalysisCut
 public:
     Channel channel;
 
-    SelectVVHFatJets(std::string name, Core::Analysis& analysis, Channel channel) 
-    : Core::AnalysisCut(name, analysis) 
+    SelectVVHFatJets(std::string name, Core::Analysis& analysis, Channel channel)
+    : Core::AnalysisCut(name, analysis)
     {
         this->channel = channel;
     };
@@ -247,10 +247,10 @@ public:
     LorentzVector ld_vqqfatjet_p4;
     LorentzVector tr_vqqfatjet_p4;
 
-    SelectJetsNoFatJetOverlap(std::string name, Core::Analysis& analysis, Channel channel, 
+    SelectJetsNoFatJetOverlap(std::string name, Core::Analysis& analysis, Channel channel,
                               JetEnergyScales* jes = nullptr, BTagSFs* btag_sfs = nullptr,
-                              PileUpJetIDSFs* puid_sfs = nullptr) 
-    : Core::SelectJets(name, analysis, jes, btag_sfs, puid_sfs) 
+                              PileUpJetIDSFs* puid_sfs = nullptr)
+    : Core::SelectJets(name, analysis, jes, btag_sfs, puid_sfs)
     {
         this->channel = channel;
     };
@@ -277,16 +277,16 @@ public:
 class SelectVJets : public Core::AnalysisCut
 {
 public:
-    SelectVJets(std::string name, Core::Analysis& analysis) 
-    : Core::AnalysisCut(name, analysis) 
+    SelectVJets(std::string name, Core::Analysis& analysis)
+    : Core::AnalysisCut(name, analysis)
     {
         // Do nothing
     };
 
     bool evaluate()
     {
-        int ld_vbsjet_idx = globals.getVal<int>("ld_vbsjet_idx");
-        int tr_vbsjet_idx = globals.getVal<int>("tr_vbsjet_idx");
+       // int ld_vbsjet_idx = globals.getVal<int>("ld_vbsjet_idx");
+       // int tr_vbsjet_idx = globals.getVal<int>("tr_vbsjet_idx");
 
         LorentzVectors good_jet_p4s = globals.getVal<LorentzVectors>("good_jet_p4s");
         Integers good_jet_idxs = globals.getVal<Integers>("good_jet_idxs");
@@ -296,9 +296,9 @@ public:
         std::pair<unsigned int, unsigned int> vqqjet_idxs;
         for (unsigned int jet_i = 0; jet_i < good_jet_p4s.size(); ++jet_i)
         {
-            int jet_idx = good_jet_idxs.at(jet_i);
             // Skip VBS jet candidates
-            if (jet_idx == ld_vbsjet_idx || jet_idx == tr_vbsjet_idx) { continue; }
+            // skip this step since we are gonna select the Vqq jets first
+            // if (jet_idx == ld_vbsjet_idx || jet_idx == tr_vbsjet_idx) { continue; }
             // Iterate over all pairs
             for (unsigned int jet_j = jet_i + 1; jet_j < good_jet_p4s.size(); ++jet_j)
             {
@@ -333,6 +333,9 @@ public:
 
         globals.setVal<LorentzVector>("ld_vqqjet_p4", ld_vqqjet_p4);
         globals.setVal<LorentzVector>("tr_vqqjet_p4", tr_vqqjet_p4);
+        // save vbf jet globals to be used in vbs part
+        globals.setVal<int>("ld_vqqjet_idx", ld_vqqjet_idx);
+        globals.setVal<int>("tr_vqqjet_idx", tr_vqqjet_idx);
         arbol.setLeaf<double>("ld_vqqjet_qgl", nt.Jet_qgl().at(ld_vqqjet_nanoidx));
         arbol.setLeaf<double>("ld_vqqjet_pt", ld_vqqjet_p4.pt());
         arbol.setLeaf<double>("ld_vqqjet_eta", ld_vqqjet_p4.eta());
@@ -354,8 +357,8 @@ class SaveVariables : public Core::AnalysisCut
 public:
     Channel channel;
 
-    SaveVariables(std::string name, Core::Analysis& analysis, Channel channel) 
-    : Core::AnalysisCut(name, analysis) 
+    SaveVariables(std::string name, Core::Analysis& analysis, Channel channel)
+    : Core::AnalysisCut(name, analysis)
     {
         this->channel = channel;
     };

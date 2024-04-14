@@ -85,6 +85,8 @@ int main(int argc, char** argv)
     analysis.initBranches();
     // analysis.initCorrections();
     analysis.initCutflow();
+    //
+
 
     arbol.newBranch<double>("ld_fatjet_xbb", -999);
     arbol.newBranch<double>("ld_fatjet_xwqq", -999);
@@ -151,28 +153,28 @@ int main(int argc, char** argv)
     arbol.newBranch<double>("tr_w_ld_fermion_pdgId",-999);
     arbol.newBranch<double>("tr_w_tr_fermion_pdgId",-999);
 
-    // gen level
-    arbol.newBranch<double>("gen_ld_w_ld_fermion_pt",-999);
-    arbol.newBranch<double>("gen_ld_w_ld_fermion_eta",-999);
-    arbol.newBranch<double>("gen_ld_w_ld_fermion_phi",-999);
-    arbol.newBranch<double>("gen_ld_w_ld_fermion_mass",-999);
-    arbol.newBranch<double>("gen_ld_w_tr_fermion_pt",-999);
-    arbol.newBranch<double>("gen_ld_w_tr_fermion_eta",-999);
-    arbol.newBranch<double>("gen_ld_w_tr_fermion_phi",-999);
-    arbol.newBranch<double>("gen_ld_w_tr_fermion_mass",-999);
-    arbol.newBranch<double>("gen_tr_w_ld_fermion_pt",-999);
-    arbol.newBranch<double>("gen_tr_w_ld_fermion_eta",-999);
-    arbol.newBranch<double>("gen_tr_w_ld_fermion_phi",-999);
-    arbol.newBranch<double>("gen_tr_w_ld_fermion_mass",-999);
-    arbol.newBranch<double>("gen_tr_w_tr_fermion_pt",-999);
-    arbol.newBranch<double>("gen_tr_w_tr_fermion_eta",-999);
-    arbol.newBranch<double>("gen_tr_w_tr_fermion_phi",-999);
-    arbol.newBranch<double>("gen_tr_w_tr_fermion_mass",-999);
+    // gen level VVH
+    arbol.newBranch<double>("gen_ld_v_ld_fermion_pt",-999);
+    arbol.newBranch<double>("gen_ld_v_ld_fermion_eta",-999);
+    arbol.newBranch<double>("gen_ld_v_ld_fermion_phi",-999);
+    arbol.newBranch<double>("gen_ld_v_ld_fermion_mass",-999);
+    arbol.newBranch<double>("gen_ld_v_tr_fermion_pt",-999);
+    arbol.newBranch<double>("gen_ld_v_tr_fermion_eta",-999);
+    arbol.newBranch<double>("gen_ld_v_tr_fermion_phi",-999);
+    arbol.newBranch<double>("gen_ld_v_tr_fermion_mass",-999);
+    arbol.newBranch<double>("gen_tr_v_ld_fermion_pt",-999);
+    arbol.newBranch<double>("gen_tr_v_ld_fermion_eta",-999);
+    arbol.newBranch<double>("gen_tr_v_ld_fermion_phi",-999);
+    arbol.newBranch<double>("gen_tr_v_ld_fermion_mass",-999);
+    arbol.newBranch<double>("gen_tr_v_tr_fermion_pt",-999);
+    arbol.newBranch<double>("gen_tr_v_tr_fermion_eta",-999);
+    arbol.newBranch<double>("gen_tr_v_tr_fermion_phi",-999);
+    arbol.newBranch<double>("gen_tr_v_tr_fermion_mass",-999);
 
-    arbol.newBranch<double>("gen_ld_w_ld_fermion_pdgId",-999);
-    arbol.newBranch<double>("gen_ld_w_tr_fermion_pdgId",-999);
-    arbol.newBranch<double>("gen_tr_w_ld_fermion_pdgId",-999);
-    arbol.newBranch<double>("gen_tr_w_tr_fermion_pdgId",-999);
+    arbol.newBranch<double>("gen_ld_v_ld_fermion_pdgId",-999);
+    arbol.newBranch<double>("gen_ld_v_tr_fermion_pdgId",-999);
+    arbol.newBranch<double>("gen_tr_v_ld_fermion_pdgId",-999);
+    arbol.newBranch<double>("gen_tr_v_tr_fermion_pdgId",-999);
 
     // Initialize branches for leading and trailing h_bb
     arbol.newBranch<double>("gen_ld_h_bb_pt", -999);
@@ -213,218 +215,390 @@ int main(int argc, char** argv)
     arbol.newBranch<double>("gen_tr_vbf_quarks_phi", -999);
     arbol.newBranch<double>("gen_tr_vbf_quarks_mass", -999);
 
-    // We know that on gen level: element 0,1 are the incoming quarks and 2,3,4 are the WWH, and 5,6 are VBF quarks. we are gonna use that knowledge to get the WWH decay products and collect them using some if then statements
+
+    arbol.newBranch<double>("gen_ld_v_mass",-999);
+    arbol.newBranch<double>("gen_ld_v_pt",-999);
+    arbol.newBranch<double>("gen_ld_v_eta",-999);
+    arbol.newBranch<double>("gen_ld_v_phi",-999);
+    arbol.newBranch<double>("gen_tr_v_mass",-999);
+    arbol.newBranch<double>("gen_tr_v_pt",-999);
+    arbol.newBranch<double>("gen_tr_v_eta",-999);
+    arbol.newBranch<double>("gen_tr_v_phi",-999);
+
+    arbol.newBranch<double>("gen_h_bb_mass",-999);
+    arbol.newBranch<double>("gen_h_bb_pt",-999);
+    arbol.newBranch<double>("gen_h_bb_eta",-999);
+    arbol.newBranch<double>("gen_h_bb_phi",-999);
+    arbol.newBranch<double>("gen_h_non_bb_mass",-999);
+    arbol.newBranch<double>("gen_h_non_bb_pt",-999);
+    arbol.newBranch<double>("gen_h_non_bb_eta",-999);
+    arbol.newBranch<double>("gen_h_non_bb_phi",-999);
+
+    arbol.newBranch<double>("gen_tr_v_dR_fermmions",-999);
+    arbol.newBranch<double>("gen_ld_v_dR_fermmions",-999);
+    arbol.newBranch<double>("gen_h_bb_dR",-999);
+    arbol.newBranch<double>("gen_h_non_bb_dR",-999);
+
+    arbol.newBranch<double>("gen_vbf_quarks_deltaphi",-999);
+    arbol.newBranch<double>("gen_vbf_quarks_deltaeta",-999);
+    arbol.newBranch<double>("gen_vbf_quarks_dijetmass",-999);
+
+    arbol.newBranch<int>("v1_pdgid",-999);
+    arbol.newBranch<int>("v2_pdgid",-999);
+
+    arbol.newBranch<double>("M_VVH_semimerged",-999);
+    arbol.setLeaf<double>("M_VVH_semimerged",(cutflow.globals.getVal<LorentzVector>("hbbfatjet_p4") +cutflow.globals.getVal<LorentzVector>("ld_vqqfatjet_p4")+cutflow.globals.getVal<LorentzVector>("ld_vqqjet_p4")+cutflow.globals.getVal<LorentzVector>("tr_vqqjet_p4")).pt());
+
+
+
+    Cut* cut1 = new LambdaCut(
+            "Cut1", [&]() { return arbol.getLeaf<double>("ld_vqqfatjet_xvqq") > 0.6; }
+        );
+        cutflow.insert("SemiMerged_SaveVariables", cut1, Right);
+    Cut* cut2 = new LambdaCut(
+            "Cut2", [&]() { return arbol.getLeaf<double>("hbbfatjet_xbb") > 0.8; }
+        );
+        cutflow.insert("Cut1", cut2, Right);
+    // Cut* cut3 = new LambdaCut(
+    //         "Cut3", [&]() { return arbol.getLeaf<double>("M_jj") > 800; }
+    //     );
+    //     cutflow.insert("Cut2", cut3, Right);
+    // Cut* cut4 = new LambdaCut(
+    //         "Cut4", [&]() { return arbol.getLeaf<double>("abs_deta_jj") > 5; }
+    //     );
+    //     cutflow.insert("Cut3", cut4, Right);
+    // Cut* cut5 = new LambdaCut(
+    //         "Cut5", [&]() { return arbol.getLeaf<double>("ST") > 1800; }
+    //     );
+    //     cutflow.insert("Cut4", cut5, Right);
+    // Cut* cut6 = new LambdaCut(
+    //         "Cut6", [&]() { return arbol.getLeaf<double>("ld_vqqfatjet_msoftdrop") > 60 && arbol.getLeaf<double>("ld_vqqfatjet_msoftdrop") < 150 ; }
+    //     );
+    //     cutflow.insert("Cut5", cut6, Right);
+    // Cut* cut7 = new LambdaCut(
+    //         "Cut7", [&]() { return arbol.getLeaf<double>("vqqjets_Mjj") > 60 && arbol.getLeaf<double>("vqqjets_Mjj") < 150 ; }
+    //     );
+    //     cutflow.insert("Cut6", cut7, Right);
     //
-    Cut* allWWH_products_identification_genlevel = new LambdaCut(
-        "AllWWH_products_identification_genlevel",
-        [&]()
-        {
-
-            std::vector<LorentzVector> ww_p4;
-            std::vector<LorentzVector> h_p4;
-            std::vector<LorentzVector> vbf_quarks_p4;
-            std::vector<int> ww_idx;
-            std::vector<int> vbf_quarks_idx;
-
-            int h_idx=0;
-            for (unsigned int gen_i = 0; gen_i <nt.nGenPart() ; gen_i++)
-            {
-                int pdgId = nt.GenPart_pdgId().at(gen_i);
-                // analyze the wwh bosons products
-                if ((gen_i== 19 || gen_i==20 || gen_i==21) && nt.GenPart_status().at(gen_i)==62)
-                {
-                    if (abs(pdgId)==24)
-                    {
-                        ww_p4.push_back(nt.GenPart_p4().at(gen_i));
-                        ww_idx.push_back(gen_i);
-                    }
-
-                    if (abs(pdgId)==25)
-                    {
-                        h_p4.push_back(nt.GenPart_p4().at(gen_i));
-                        h_idx=gen_i;
-                    }
-                }
-                // the vbf quarks
-                if (gen_i==5 || gen_i==6)
-                {
-                    vbf_quarks_p4.push_back(nt.GenPart_p4().at(gen_i));
-                    vbf_quarks_idx.push_back(gen_i);
-                }
-            }
-            // Error handling for ww_p4
-            if (ww_p4.empty() || ww_p4.size() < 2) {
-                // Handle error
-                std::cout << "ww_p4 size: " << ww_p4.size() << std::endl;
-
-                return false;
-            }
-            int ld_ww_idx = (ww_p4[0].pt() > ww_p4[1].pt()) ? ww_idx[0] : ww_idx[1];
-            int tr_ww_idx = (ww_p4[0].pt() > ww_p4[1].pt()) ? ww_idx[1] : ww_idx[0];
-            int ld_vbf_idx = (vbf_quarks_p4[0].pt() > vbf_quarks_p4[1].pt()) ? vbf_quarks_idx[0] : vbf_quarks_idx[1];
-            int tr_vbf_idx = (vbf_quarks_p4[0].pt() > vbf_quarks_p4[1].pt()) ? vbf_quarks_idx[1] : vbf_quarks_idx[0];
-std::cout << "ld_ww_idx: " << ld_ww_idx << ", tr_ww_idx: " << tr_ww_idx << std::endl;
-
-            std::vector<LorentzVector> ld_ww_fermions_p4;
-            std::vector<LorentzVector> tr_ww_fermions_p4;
-            std::vector<int> ld_ww_fermions_pdgId;
-            std::vector<int> tr_ww_fermions_pdgId;
-            std::vector<LorentzVector> h_bb_p4;
-            std::vector<LorentzVector> h_non_bb_p4;
-            std::vector<int> h_bb_pdgId;
-            std::vector<int> h_non_bb_pdgId;
+    // Cut* cut8 = new LambdaCut(
+    //         "Cut8", [&]() { return arbol.getLeaf<double>("hbbfatjet_msoftdrop") < 150 && arbol.getLeaf<double>("hbbfatjet_msoftdrop") > 60 ; }
+    //     );
+    //     cutflow.insert("Cut7", cut8, Right);
+    // Cut* cut9 = new LambdaCut(
+    //         "Cut9", [&]() { return arbol.getLeaf<double>("HT") < 700 && arbol.getLeaf<double>("HT") > 250 ; }
+    //     );
+    //     cutflow.insert("Cut8", cut9, Right);
+    // Cut* cut10 = new LambdaCut(
+    //         "Cut10", [&]() { return arbol.getLeaf<int>("n_jets") == 4 ; }
+    //     );
+    //     cutflow.insert("Cut9", cut10, Right);
+    // Cut* cut11 = new LambdaCut(
+    //         "Cut11", [&]() { return arbol.getLeaf<int>("n_jets") == 4 ; }
+    //     );
+    //     cutflow.insert("Cut10", cut11, Right);
+    // Cut* cut12 = new LambdaCut(
+    //         "Cut12", [&]() { return arbol.getLeaf<double>("ST") > 1800 ; }
+    //     );
+    //     cutflow.insert("Cut11", cut12, Right);
 
 
-            for (unsigned int gen_ii = 0; gen_ii < nt.nGenPart(); gen_ii++)
-            {
-                int pdgId = nt.GenPart_pdgId().at(gen_ii);
+    // We know that on gen level: element 0,1 are the incoming quarks and 2,3,4 are the VVH, and 5,6 are VBF quarks. we are gonna use that knowledge to get the VVH decay products and collect them using some if then statements
+    //(commented out after running over the data 27jan 2024)
+    // Cut* allVVH_products_identification_genlevel = new LambdaCut(
+    // 	"AllVVH_products_identification_genlevel",
+    // 	[&]()
+    // 	{
+    //
+    // 		std::vector<LorentzVector> vv_p4;
+    // 		std::vector<LorentzVector> h_p4;
+    // 		std::vector<LorentzVector> vbf_quarks_p4;
+    // 		std::vector<int> vv_idx;
+    // 		std::vector<int> vbf_quarks_idx;
+    //
+    //         std::vector<int> vv_pdgid;
+    //
+    //
+    // 		int h_idx=0;
+    // 		for (unsigned int gen_i = 0; gen_i <nt.nGenPart() ; gen_i++)
+    // 		{
+    // 			int pdgId = nt.GenPart_pdgId().at(gen_i);
+    // 			// analyze the vvh bosons products
+    // 			if ( nt.GenPart_status().at(gen_i)==62)
+    // 			// if ((gen_i== 19 || gen_i==20 || gen_i==21) && nt.GenPart_status().at(gen_i)==62)
+    // 			{
+    // 				if (abs(pdgId)==24 || abs(pdgId)==23)
+    // 				{
+    // 					vv_p4.push_back(nt.GenPart_p4().at(gen_i));
+    // 					vv_idx.push_back(gen_i);
+    //                     vv_pdgid.push_back(pdgId);
+    // 				}
+    //
+    // 				if (abs(pdgId)==25)
+    // 				{
+    // 					h_p4.push_back(nt.GenPart_p4().at(gen_i));
+    // 					h_idx=gen_i;
+    // 				}
+    // 			}
+    // 			// the vbf quarks
+    // 			if (gen_i==5 || gen_i==6)
+    // 			{
+    // 				vbf_quarks_p4.push_back(nt.GenPart_p4().at(gen_i));
+    // 				vbf_quarks_idx.push_back(gen_i);
+    // 			}
+    // 		}
+    // 		// Error handling for vv_p4
+    // 		if (vv_p4.empty() || vv_p4.size() < 2) {
+    // 			// Handle error
+    // 			std::cout << "vv_p4 size: " << vv_p4.size() << std::endl;
+    //
+    // 			return false;
+    // 		}
+    // 		int ld_vv_idx = (vv_p4[0].pt() > vv_p4[1].pt()) ? vv_idx[0] : vv_idx[1];
+    // 		int tr_vv_idx = (vv_p4[0].pt() > vv_p4[1].pt()) ? vv_idx[1] : vv_idx[0];
+    // 		// int ld_vbf_idx = (vbf_quarks_p4[0].pt() > vbf_quarks_p4[1].pt()) ? vbf_quarks_idx[0] : vbf_quarks_idx[1];
+    // 		// int tr_vbf_idx = (vbf_quarks_p4[0].pt() > vbf_quarks_p4[1].pt()) ? vbf_quarks_idx[1] : vbf_quarks_idx[0];
+    // // std::cout << "ld_vv_idx: " << ld_vv_idx << ", tr_vv_idx: " << tr_vv_idx << std::endl;
+    //
+    // 		std::vector<LorentzVector> ld_vv_fermions_p4;
+    // 		std::vector<LorentzVector> tr_vv_fermions_p4;
+    // 		std::vector<int> ld_vv_fermions_pdgId;
+    // 		std::vector<int> tr_vv_fermions_pdgId;
+    // 		std::vector<LorentzVector> h_bb_p4;
+    // 		std::vector<LorentzVector> h_non_bb_p4;
+    // 		std::vector<int> h_bb_pdgId;
+    // 		std::vector<int> h_non_bb_pdgId;
+    //
+    //
+    // 		for (unsigned int gen_ii = 0; gen_ii < nt.nGenPart(); gen_ii++)
+    // 		{
+    // 			int pdgId = nt.GenPart_pdgId().at(gen_ii);
+    //
+    //
+    // // dumpGenParticleInfos();
+    // 			if (ld_vv_idx==nt.GenPart_genPartIdxMother().at(gen_ii))
+    // 			{
+    // 				ld_vv_fermions_p4.push_back(nt.GenPart_p4().at(gen_ii));
+    // 				ld_vv_fermions_pdgId.push_back(nt.GenPart_pdgId().at(gen_ii));
+    // 				// std::cout << "gen_ii for " << gen_ii << endl;
+    // 				// std::cout << "---------------------------------------------------------- " << endl;
+    //
+    //
+    // 			}
+    // 			else if (tr_vv_idx==nt.GenPart_genPartIdxMother().at(gen_ii))
+    // 			{
+    // 				tr_vv_fermions_p4.push_back(nt.GenPart_p4().at(gen_ii));
+    // 				tr_vv_fermions_pdgId.push_back(nt.GenPart_pdgId().at(gen_ii));
+    //
+    // 			}
+    //
+    // 			if (h_idx==nt.GenPart_genPartIdxMother().at(gen_ii) && abs(pdgId)==5)
+    // 			{
+    // 				h_bb_p4.push_back(nt.GenPart_p4().at(gen_ii));
+    // 				h_bb_pdgId.push_back(nt.GenPart_pdgId().at(gen_ii));
+    //
+    // 			}
+    // 			else if (h_idx==nt.GenPart_genPartIdxMother().at(gen_ii) && abs(pdgId)!=5)
+    // 			{
+    // 				h_non_bb_p4.push_back(nt.GenPart_p4().at(gen_ii));
+    // 				h_non_bb_pdgId.push_back(nt.GenPart_pdgId().at(gen_ii));
+    //
+    // 			}
+    // 		}
+    // 		// Error handling for ld_vv_fermions_p4
+    // 		if (ld_vv_fermions_p4.empty() || ld_vv_fermions_p4.size() < 2) {
+    // 			// Handle error
+    // 			std::cout << "ld_vv_fermions_p4 size: " << ld_vv_fermions_p4.size() << std::endl;
+    //
+    // 			return false;
+    // 		}
+    //
+    // 		// Error handling for tr_vv_fermions_p4
+    // 		if (tr_vv_fermions_p4.empty() || tr_vv_fermions_p4.size() < 2) {
+    // 			// Handle error
+    // 			std::cout << "tr_vv_fermions_p4 size: " << tr_vv_fermions_p4.size() << std::endl;
+    //
+    // 			return false;
+    // 		}
+    //
+    // 		// // Error handling for h_bb_p4
+    // 		// if (h_bb_p4.empty() || h_bb_p4.size() < 2) {
+    // 		//     // Handle error
+    // 		//     std::cout << "h_bb_p4 size: " << h_bb_p4.size() << std::endl;
+    // 		//
+    // 		//     return false;
+    // 		// }
+    //
+    // 		// // Error handling for h_non_bb_p4
+    // 		// if (h_non_bb_p4.empty() || h_non_bb_p4.size() < 2) {
+    // 		//     // Handle error
+    // 		//     std::cout << "h_non_bb_p4 size: " << h_non_bb_p4.size() << std::endl;
+    // 		//
+    // 		//     return false;
+    // 		// }
+    // 		if (ld_vv_fermions_p4.size()==2)
+    // 		{
+    // 			LorentzVector ld_v_ld_fermion = (ld_vv_fermions_p4[0].pt() > ld_vv_fermions_p4[1].pt()) ? ld_vv_fermions_p4[0] : ld_vv_fermions_p4[1] ; // leading V's leading fermion
+    // 			LorentzVector ld_v_tr_fermion = (ld_vv_fermions_p4[0].pt() > ld_vv_fermions_p4[1].pt()) ? ld_vv_fermions_p4[1] : ld_vv_fermions_p4[0]; // leading V's trailing fermion
+    // 			LorentzVector tr_v_ld_fermion = (tr_vv_fermions_p4[0].pt() > tr_vv_fermions_p4[1].pt()) ? tr_vv_fermions_p4[0] : tr_vv_fermions_p4[1]; // trailing V's leading fermion
+    // 			LorentzVector tr_v_tr_fermion = (tr_vv_fermions_p4[0].pt() > tr_vv_fermions_p4[1].pt()) ? tr_vv_fermions_p4[1] : tr_vv_fermions_p4[0]; // trailing V's trailing fermion
+    //
+    // 			// add the two fermions
+    // 			LorentzVector ld_v = (ld_vv_fermions_p4[0] + ld_vv_fermions_p4[1]); //
+    // 			LorentzVector tr_v = (tr_vv_fermions_p4[0] + tr_vv_fermions_p4[1]); //
+    // 			double ld_v_dR_fermmions = ROOT::Math::VectorUtil::DeltaR(ld_vv_fermions_p4[0],ld_vv_fermions_p4[1]);
+    // 			double tr_v_dR_fermmions = ROOT::Math::VectorUtil::DeltaR(tr_vv_fermions_p4[0],tr_vv_fermions_p4[1]);
+    //
+    // 			int ld_v_ld_fermion_pdgId = (ld_vv_fermions_p4[0].pt() > ld_vv_fermions_p4[1].pt()) ? ld_vv_fermions_pdgId[0] : ld_vv_fermions_pdgId[1] ; // leading V's leading fermion;
+    // 			int ld_v_tr_fermion_pdgId = (ld_vv_fermions_p4[0].pt() > ld_vv_fermions_p4[1].pt()) ? ld_vv_fermions_pdgId[1] : ld_vv_fermions_pdgId[0] ; // leading V's trailing fermion;
+    // 			int tr_v_ld_fermion_pdgId = (tr_vv_fermions_p4[0].pt() > tr_vv_fermions_p4[1].pt()) ? tr_vv_fermions_pdgId[0] : tr_vv_fermions_pdgId[1] ; // trainling V's leading fermion;
+    // 			int tr_v_tr_fermion_pdgId = (tr_vv_fermions_p4[0].pt() > tr_vv_fermions_p4[1].pt()) ? tr_vv_fermions_pdgId[1] : tr_vv_fermions_pdgId[0] ; // trainling V's trailing fermion;
+    //
+    // 			// for the vv fermions
+    // 			arbol.setLeaf<double>("gen_ld_v_ld_fermion_pt",ld_v_ld_fermion.pt());
+    // 			arbol.setLeaf<double>("gen_ld_v_ld_fermion_eta",ld_v_ld_fermion.eta());
+    // 			arbol.setLeaf<double>("gen_ld_v_ld_fermion_phi",ld_v_ld_fermion.phi());
+    // 			arbol.setLeaf<double>("gen_ld_v_ld_fermion_mass",ld_v_ld_fermion.mass());
+    // 			arbol.setLeaf<double>("gen_ld_v_tr_fermion_pt",ld_v_tr_fermion.pt());
+    // 			arbol.setLeaf<double>("gen_ld_v_tr_fermion_eta",ld_v_tr_fermion.eta());
+    // 			arbol.setLeaf<double>("gen_ld_v_tr_fermion_phi",ld_v_tr_fermion.phi());
+    // 			arbol.setLeaf<double>("gen_ld_v_tr_fermion_mass",ld_v_tr_fermion.mass());
+    // 			arbol.setLeaf<double>("gen_tr_v_ld_fermion_pt",tr_v_ld_fermion.pt());
+    // 			arbol.setLeaf<double>("gen_tr_v_ld_fermion_eta",tr_v_ld_fermion.eta());
+    // 			arbol.setLeaf<double>("gen_tr_v_ld_fermion_phi",tr_v_ld_fermion.phi());
+    // 			arbol.setLeaf<double>("gen_tr_v_ld_fermion_mass",tr_v_ld_fermion.mass());
+    // 			arbol.setLeaf<double>("gen_tr_v_tr_fermion_pt",tr_v_tr_fermion.pt());
+    // 			arbol.setLeaf<double>("gen_tr_v_tr_fermion_eta",tr_v_tr_fermion.eta());
+    // 			arbol.setLeaf<double>("gen_tr_v_tr_fermion_phi",tr_v_tr_fermion.phi());
+    // 			arbol.setLeaf<double>("gen_tr_v_tr_fermion_mass",tr_v_tr_fermion.mass());
+    //
+    // 			arbol.setLeaf<double>("gen_ld_v_ld_fermion_pdgId",ld_v_ld_fermion_pdgId);
+    // 			arbol.setLeaf<double>("gen_ld_v_tr_fermion_pdgId",ld_v_tr_fermion_pdgId);
+    // 			arbol.setLeaf<double>("gen_tr_v_ld_fermion_pdgId",tr_v_ld_fermion_pdgId);
+    // 			arbol.setLeaf<double>("gen_tr_v_tr_fermion_pdgId",tr_v_tr_fermion_pdgId);
+    //
+    // 			arbol.setLeaf<double>("gen_ld_v_mass",ld_v.mass());
+    // 			arbol.setLeaf<double>("gen_ld_v_pt",ld_v.pt());
+    // 			arbol.setLeaf<double>("gen_ld_v_eta",ld_v.eta());
+    // 			arbol.setLeaf<double>("gen_ld_v_phi",ld_v.phi());
+    // 			arbol.setLeaf<double>("gen_tr_v_mass",tr_v.mass());
+    // 			arbol.setLeaf<double>("gen_tr_v_pt",tr_v.pt());
+    // 			arbol.setLeaf<double>("gen_tr_v_eta",tr_v.eta());
+    // 			arbol.setLeaf<double>("gen_tr_v_phi",tr_v.phi());
+    //
+    // 			arbol.setLeaf<double>("gen_tr_v_dR_fermmions",tr_v_dR_fermmions);
+    // 			arbol.setLeaf<double>("gen_ld_v_dR_fermmions",ld_v_dR_fermmions);
+    //
+    //
+    // 		}
+    // 		else{return false;}
+    //
+    // 		if (h_bb_p4.size()==2) {
+    // 			LorentzVector ld_h_bb = (h_bb_p4[0].pt() > h_bb_p4[1].pt()) ? h_bb_p4[0] : h_bb_p4[1] ; // leading bb quark for the h->bb
+    // 			LorentzVector tr_h_bb = (h_bb_p4[0].pt() > h_bb_p4[1].pt()) ? h_bb_p4[1] : h_bb_p4[0] ; // trainling bb quark for the h->bb
+    //
+    // 			//add the two decay particles of the higgs
+    // 			LorentzVector h_bb = (h_bb_p4[0] + h_bb_p4[1]); //
+    // 			double h_bb_dR = ROOT::Math::VectorUtil::DeltaR(h_bb_p4[0],h_bb_p4[1]);
+    //
+    //
+    // 			int ld_h_bb_pdgId = (h_bb_p4[0].pt() > h_bb_p4[1].pt()) ? h_bb_pdgId[0] : h_bb_pdgId[1] ; // leading bb quark for the h->bb
+    // 			int tr_h_bb_pdgId = (h_bb_p4[0].pt() > h_bb_p4[1].pt()) ? h_bb_pdgId[1] : h_bb_pdgId[0] ; // tr bb quark for the h->bb
+    //
+    // 			// the h decay products
+    // 			arbol.setLeaf<double>("gen_ld_h_bb_pt",ld_h_bb.pt());
+    // 			arbol.setLeaf<double>("gen_ld_h_bb_eta",ld_h_bb.eta());
+    // 			arbol.setLeaf<double>("gen_ld_h_bb_phi",ld_h_bb.phi());
+    // 			arbol.setLeaf<double>("gen_ld_h_bb_mass",ld_h_bb.mass());
+    // 			arbol.setLeaf<double>("gen_tr_h_bb_pt",tr_h_bb.pt());
+    // 			arbol.setLeaf<double>("gen_tr_h_bb_eta",tr_h_bb.eta());
+    // 			arbol.setLeaf<double>("gen_tr_h_bb_phi",tr_h_bb.phi());
+    // 			arbol.setLeaf<double>("gen_tr_h_bb_mass",tr_h_bb.mass());
+    //
+    // 			arbol.setLeaf<double>("gen_ld_h_bb_pdgId",ld_h_bb_pdgId);
+    // 			arbol.setLeaf<double>("gen_tr_h_bb_pdgId",tr_h_bb_pdgId);
+    //
+    // 			//add the two decay particles of the higgs
+    // 			arbol.setLeaf<double>("gen_h_bb_mass",h_bb.mass());
+    // 			arbol.setLeaf<double>("gen_h_bb_pt",h_bb.pt());
+    // 			arbol.setLeaf<double>("gen_h_bb_eta",h_bb.eta());
+    // 			arbol.setLeaf<double>("gen_h_bb_phi",h_bb.phi());
+    //
+    // 			arbol.setLeaf<double>("gen_h_bb_dR",h_bb_dR);
+    // 		}
+    // 		if (h_non_bb_p4.size()==2) {
+    // 			LorentzVector ld_h_non_bb = (h_non_bb_p4[0].pt() > h_non_bb_p4[1].pt()) ? h_non_bb_p4[0] : h_non_bb_p4[1] ; // leading bb quark for the h non bb
+    // 			LorentzVector tr_h_non_bb = (h_non_bb_p4[0].pt() > h_non_bb_p4[1].pt()) ? h_non_bb_p4[1] : h_non_bb_p4[0] ; // trainling bb quark for the h non bb
+    //
+    // 			int ld_h_non_bb_pdgId = (h_non_bb_p4[0].pt() > h_non_bb_p4[1].pt()) ? h_non_bb_pdgId[0] : h_non_bb_pdgId[1] ; // leading bb quark for the non h bb
+    // 			int tr_h_non_bb_pdgId = (h_non_bb_p4[0].pt() > h_non_bb_p4[1].pt()) ? h_non_bb_pdgId[1] : h_non_bb_pdgId[0] ; // tr bb quark for the non h bb
+    //
+    // 			LorentzVector h_non_bb = (h_non_bb_p4[0] + h_non_bb_p4[1]); //
+    // 			double h_non_bb_dR = ROOT::Math::VectorUtil::DeltaR(h_non_bb_p4[0],h_non_bb_p4[1]);
+    //
+    //
+    //
+    // 			arbol.setLeaf<double>("gen_ld_h_non_bb_pt",ld_h_non_bb.pt());
+    // 			arbol.setLeaf<double>("gen_ld_h_non_bb_eta",ld_h_non_bb.eta());
+    // 			arbol.setLeaf<double>("gen_ld_h_non_bb_phi",ld_h_non_bb.phi());
+    // 			arbol.setLeaf<double>("gen_ld_h_non_bb_mass",ld_h_non_bb.mass());
+    // 			arbol.setLeaf<double>("gen_tr_h_non_bb_pt",tr_h_non_bb.pt());
+    // 			arbol.setLeaf<double>("gen_tr_h_non_bb_eta",tr_h_non_bb.eta());
+    // 			arbol.setLeaf<double>("gen_tr_h_non_bb_phi",tr_h_non_bb.phi());
+    // 			arbol.setLeaf<double>("gen_tr_h_non_bb_mass",tr_h_non_bb.mass());
+    //
+    //
+    // 			arbol.setLeaf<double>("gen_ld_h_non_bb_pdgId",ld_h_non_bb_pdgId);
+    // 			arbol.setLeaf<double>("gen_tr_h_non_bb_pdgId",tr_h_non_bb_pdgId);
+    //
+    // 			//add the two decay particles of the higgs
+    // 			arbol.setLeaf<double>("gen_h_non_bb_mass",h_non_bb.mass());
+    // 			arbol.setLeaf<double>("gen_h_non_bb_pt",h_non_bb.pt());
+    // 			arbol.setLeaf<double>("gen_h_non_bb_eta",h_non_bb.eta());
+    // 			arbol.setLeaf<double>("gen_h_non_bb_phi",h_non_bb.phi());
+    //
+    // 			arbol.setLeaf<double>("gen_h_non_bb_dR",h_non_bb_dR);
+    //
+    //
+    // 		}
+    //
+    //
+    //
+    //
+    // 		LorentzVector ld_vbf_quarks_p4 = (vbf_quarks_p4[0].pt() > vbf_quarks_p4[1].pt()) ? vbf_quarks_p4[0] : vbf_quarks_p4[1] ; // leading vbf quarks
+    // 		LorentzVector tr_vbf_quarks_p4 = (vbf_quarks_p4[0].pt() > vbf_quarks_p4[1].pt()) ? vbf_quarks_p4[1] : vbf_quarks_p4[0] ; // trailing vbf quarks
+    //
+    // 		LorentzVector vbf_quarks = (vbf_quarks_p4[0] + vbf_quarks_p4[1])  ;
+    //
+    //
+    //
+    //
+    // 		// the two vbf quarks branches
+    // 		arbol.setLeaf<double>("gen_ld_vbf_quarks_pt",ld_vbf_quarks_p4.pt());
+    // 		arbol.setLeaf<double>("gen_ld_vbf_quarks_eta",ld_vbf_quarks_p4.eta());
+    // 		arbol.setLeaf<double>("gen_ld_vbf_quarks_phi",ld_vbf_quarks_p4.phi());
+    // 		arbol.setLeaf<double>("gen_ld_vbf_quarks_mass",ld_vbf_quarks_p4.mass());
+    // 		arbol.setLeaf<double>("gen_tr_vbf_quarks_pt",tr_vbf_quarks_p4.pt());
+    // 		arbol.setLeaf<double>("gen_tr_vbf_quarks_eta",tr_vbf_quarks_p4.eta());
+    // 		arbol.setLeaf<double>("gen_tr_vbf_quarks_phi",tr_vbf_quarks_p4.phi());
+    // 		arbol.setLeaf<double>("gen_tr_vbf_quarks_mass",tr_vbf_quarks_p4.mass());
+    //
+    // 		// add the two vbf quarks
+    // 		arbol.setLeaf<double>("gen_vbf_quarks_deltaphi",vbf_quarks_p4[0].phi()- vbf_quarks_p4[1].phi());
+    // 		arbol.setLeaf<double>("gen_vbf_quarks_deltaeta",vbf_quarks_p4[0].eta()- vbf_quarks_p4[1].eta());
+    // 		arbol.setLeaf<double>("gen_vbf_quarks_dijetmass",vbf_quarks.mass());
+    //
+    //         // the pdgid branch to differntiate what is the process of the vvh: wzh wwh zzh oswwh
+    //         arbol.setLeaf<int>("v1_pdgid",vv_pdgid[0]);
+    //         arbol.setLeaf<int>("v2_pdgid",vv_pdgid[1]);
+    //
+    //         // arbol.setLeaf<double>("xsec_sf1", (nt.isData()) ? 1. : cli.scale_factor*nt.genWeight()*10000);
+    //         // arbol.setLeaf<double>("weight_of_eachevent", (nt.isData()) ? 1. : cli.scale_factor*nt.genWeight());
+    //
+    // 		return true;
+    // 	}
+    // );
+    // cutflow.insert("Cut2", allVVH_products_identification_genlevel, Right);
 
-
-// dumpGenParticleInfos();
-                if (ld_ww_idx==nt.GenPart_genPartIdxMother().at(gen_ii))
-                {
-                    ld_ww_fermions_p4.push_back(nt.GenPart_p4().at(gen_ii));
-                    ld_ww_fermions_pdgId.push_back(nt.GenPart_pdgId().at(gen_ii));
-                    std::cout << "gen_ii for " << gen_ii << endl;
-                    std::cout << "---------------------------------------------------------- " << endl;
-
-
-                }
-                else if (tr_ww_idx==nt.GenPart_genPartIdxMother().at(gen_ii))
-                {
-                    tr_ww_fermions_p4.push_back(nt.GenPart_p4().at(gen_ii));
-                    tr_ww_fermions_pdgId.push_back(nt.GenPart_pdgId().at(gen_ii));
-
-                }
-
-                if (h_idx==nt.GenPart_genPartIdxMother().at(gen_ii) && abs(pdgId)==5)
-                {
-                    h_bb_p4.push_back(nt.GenPart_p4().at(gen_ii));
-                    h_bb_pdgId.push_back(nt.GenPart_pdgId().at(gen_ii));
-
-                }
-                else if (h_idx==nt.GenPart_genPartIdxMother().at(gen_ii) && abs(pdgId)!=5)
-                {
-                    h_non_bb_p4.push_back(nt.GenPart_p4().at(gen_ii));
-                    h_non_bb_pdgId.push_back(nt.GenPart_pdgId().at(gen_ii));
-
-                }
-            }
-            // Error handling for ld_ww_fermions_p4
-            if (ld_ww_fermions_p4.empty() || ld_ww_fermions_p4.size() < 2) {
-                // Handle error
-                std::cout << "ld_ww_fermions_p4 size: " << ld_ww_fermions_p4.size() << std::endl;
-
-                return false;
-            }
-
-            // Error handling for tr_ww_fermions_p4
-            if (tr_ww_fermions_p4.empty() || tr_ww_fermions_p4.size() < 2) {
-                // Handle error
-                std::cout << "tr_ww_fermions_p4 size: " << tr_ww_fermions_p4.size() << std::endl;
-
-                return false;
-            }
-
-            // Error handling for h_bb_p4
-            if (h_bb_p4.empty() || h_bb_p4.size() < 2) {
-                // Handle error
-                std::cout << "h_bb_p4 size: " << h_bb_p4.size() << std::endl;
-
-                return false;
-            }
-
-            // Error handling for h_non_bb_p4
-            if (h_non_bb_p4.empty() || h_non_bb_p4.size() < 2) {
-                // Handle error
-                std::cout << "h_non_bb_p4 size: " << h_non_bb_p4.size() << std::endl;
-
-                return false;
-            }
-            LorentzVector ld_w_ld_fermion = (ld_ww_fermions_p4[0].pt() > ld_ww_fermions_p4[1].pt()) ? ld_ww_fermions_p4[0] : ld_ww_fermions_p4[1] ; // leading W's leading fermion
-            LorentzVector ld_w_tr_fermion = (ld_ww_fermions_p4[0].pt() > ld_ww_fermions_p4[1].pt()) ? ld_ww_fermions_p4[1] : ld_ww_fermions_p4[0]; // leading W's trailing fermion
-            LorentzVector tr_w_ld_fermion = (tr_ww_fermions_p4[0].pt() > tr_ww_fermions_p4[1].pt()) ? tr_ww_fermions_p4[0] : tr_ww_fermions_p4[1]; // trailing W's leading fermion
-            LorentzVector tr_w_tr_fermion = (tr_ww_fermions_p4[0].pt() > tr_ww_fermions_p4[1].pt()) ? tr_ww_fermions_p4[1] : tr_ww_fermions_p4[0]; // trailing W's trailing fermion
-
-            LorentzVector ld_h_bb = (h_bb_p4[0].pt() > h_bb_p4[1].pt()) ? h_bb_p4[0] : h_bb_p4[1] ; // leading bb quark for the h->bb
-            LorentzVector tr_h_bb = (h_bb_p4[0].pt() > h_bb_p4[1].pt()) ? h_bb_p4[1] : h_bb_p4[0] ; // trainling bb quark for the h->bb
-            LorentzVector ld_h_non_bb = (h_non_bb_p4[0].pt() > h_non_bb_p4[1].pt()) ? h_non_bb_p4[0] : h_non_bb_p4[1] ; // leading bb quark for the h non bb
-            LorentzVector tr_h_non_bb = (h_non_bb_p4[0].pt() > h_non_bb_p4[1].pt()) ? h_non_bb_p4[1] : h_non_bb_p4[0] ; // trainling bb quark for the h non bb
-
-            int ld_w_ld_fermion_pdgId = (ld_ww_fermions_p4[0].pt() > ld_ww_fermions_p4[1].pt()) ? ld_ww_fermions_pdgId[0] : ld_ww_fermions_pdgId[1] ; // leading W's leading fermion;
-            int ld_w_tr_fermion_pdgId = (ld_ww_fermions_p4[0].pt() > ld_ww_fermions_p4[1].pt()) ? ld_ww_fermions_pdgId[1] : ld_ww_fermions_pdgId[0] ; // leading W's trailing fermion;
-            int tr_w_ld_fermion_pdgId = (tr_ww_fermions_p4[0].pt() > tr_ww_fermions_p4[1].pt()) ? tr_ww_fermions_pdgId[0] : tr_ww_fermions_pdgId[1] ; // trainling W's leading fermion;
-            int tr_w_tr_fermion_pdgId = (tr_ww_fermions_p4[0].pt() > tr_ww_fermions_p4[1].pt()) ? tr_ww_fermions_pdgId[1] : tr_ww_fermions_pdgId[0] ; // trainling W's trailing fermion;
-
-            int ld_h_bb_pdgId = (h_bb_p4[0].pt() > h_bb_p4[1].pt()) ? h_bb_pdgId[0] : h_bb_pdgId[1] ; // leading bb quark for the h->bb
-            int tr_h_bb_pdgId = (h_bb_p4[0].pt() > h_bb_p4[1].pt()) ? h_bb_pdgId[1] : h_bb_pdgId[0] ; // tr bb quark for the h->bb
-            int ld_h_non_bb_pdgId = (h_non_bb_p4[0].pt() > h_non_bb_p4[1].pt()) ? h_non_bb_pdgId[0] : h_non_bb_pdgId[1] ; // leading bb quark for the non h bb
-            int tr_h_non_bb_pdgId = (h_non_bb_p4[0].pt() > h_non_bb_p4[1].pt()) ? h_non_bb_pdgId[1] : h_non_bb_pdgId[0] ; // tr bb quark for the non h bb
-
-            LorentzVector ld_vbf_quarks_p4 = (vbf_quarks_p4[0].pt() > vbf_quarks_p4[1].pt()) ? vbf_quarks_p4[0] : vbf_quarks_p4[1] ; // leading vbf quarks
-            LorentzVector tr_vbf_quarks_p4 = (vbf_quarks_p4[0].pt() > vbf_quarks_p4[1].pt()) ? vbf_quarks_p4[1] : vbf_quarks_p4[0] ; // trailing vbf quarks
-
-            // for the ww fermions
-            arbol.setLeaf<double>("gen_ld_w_ld_fermion_pt",ld_w_ld_fermion.pt());
-            arbol.setLeaf<double>("gen_ld_w_ld_fermion_eta",ld_w_ld_fermion.eta());
-            arbol.setLeaf<double>("gen_ld_w_ld_fermion_phi",ld_w_ld_fermion.phi());
-            arbol.setLeaf<double>("gen_ld_w_ld_fermion_mass",ld_w_ld_fermion.mass());
-            arbol.setLeaf<double>("gen_ld_w_tr_fermion_pt",ld_w_tr_fermion.pt());
-            arbol.setLeaf<double>("gen_ld_w_tr_fermion_eta",ld_w_tr_fermion.eta());
-            arbol.setLeaf<double>("gen_ld_w_tr_fermion_phi",ld_w_tr_fermion.phi());
-            arbol.setLeaf<double>("gen_ld_w_tr_fermion_mass",ld_w_tr_fermion.mass());
-            arbol.setLeaf<double>("gen_tr_w_ld_fermion_pt",tr_w_ld_fermion.pt());
-            arbol.setLeaf<double>("gen_tr_w_ld_fermion_eta",tr_w_ld_fermion.eta());
-            arbol.setLeaf<double>("gen_tr_w_ld_fermion_phi",tr_w_ld_fermion.phi());
-            arbol.setLeaf<double>("gen_tr_w_ld_fermion_mass",tr_w_ld_fermion.mass());
-            arbol.setLeaf<double>("gen_tr_w_tr_fermion_pt",tr_w_tr_fermion.pt());
-            arbol.setLeaf<double>("gen_tr_w_tr_fermion_eta",tr_w_tr_fermion.eta());
-            arbol.setLeaf<double>("gen_tr_w_tr_fermion_phi",tr_w_tr_fermion.phi());
-            arbol.setLeaf<double>("gen_tr_w_tr_fermion_mass",tr_w_tr_fermion.mass());
-
-            arbol.setLeaf<double>("gen_ld_w_ld_fermion_pdgId",ld_w_ld_fermion_pdgId);
-            arbol.setLeaf<double>("gen_ld_w_tr_fermion_pdgId",ld_w_tr_fermion_pdgId);
-            arbol.setLeaf<double>("gen_tr_w_ld_fermion_pdgId",tr_w_ld_fermion_pdgId);
-            arbol.setLeaf<double>("gen_tr_w_tr_fermion_pdgId",tr_w_tr_fermion_pdgId);
-
-            // the h decay products
-            arbol.setLeaf<double>("gen_ld_h_bb_pt",ld_h_bb.pt());
-            arbol.setLeaf<double>("gen_ld_h_bb_eta",ld_h_bb.eta());
-            arbol.setLeaf<double>("gen_ld_h_bb_phi",ld_h_bb.phi());
-            arbol.setLeaf<double>("gen_ld_h_bb_mass",ld_h_bb.mass());
-            arbol.setLeaf<double>("gen_tr_h_bb_pt",tr_h_bb.pt());
-            arbol.setLeaf<double>("gen_tr_h_bb_eta",tr_h_bb.eta());
-            arbol.setLeaf<double>("gen_tr_h_bb_phi",tr_h_bb.phi());
-            arbol.setLeaf<double>("gen_tr_h_bb_mass",tr_h_bb.mass());
-            arbol.setLeaf<double>("gen_ld_h_non_bb_pt",ld_h_non_bb.pt());
-            arbol.setLeaf<double>("gen_ld_h_non_bb_eta",ld_h_non_bb.eta());
-            arbol.setLeaf<double>("gen_ld_h_non_bb_phi",ld_h_non_bb.phi());
-            arbol.setLeaf<double>("gen_ld_h_non_bb_mass",ld_h_non_bb.mass());
-            arbol.setLeaf<double>("gen_tr_h_non_bb_pt",tr_h_non_bb.pt());
-            arbol.setLeaf<double>("gen_tr_h_non_bb_eta",tr_h_non_bb.eta());
-            arbol.setLeaf<double>("gen_tr_h_non_bb_phi",tr_h_non_bb.phi());
-            arbol.setLeaf<double>("gen_tr_h_non_bb_mass",tr_h_non_bb.mass());
-
-            arbol.setLeaf<double>("gen_ld_h_bb_pdgId",ld_h_bb_pdgId);
-            arbol.setLeaf<double>("gen_tr_h_bb_pdgId",tr_h_bb_pdgId);
-            arbol.setLeaf<double>("gen_ld_h_non_bb_pdgId",ld_h_non_bb_pdgId);
-            arbol.setLeaf<double>("gen_tr_h_non_bb_pdgId",tr_h_non_bb_pdgId);
-
-            // the two vbf quarks branches
-            arbol.setLeaf<double>("gen_ld_vbf_quarks_pt",ld_vbf_quarks_p4.pt());
-            arbol.setLeaf<double>("gen_ld_vbf_quarks_eta",ld_vbf_quarks_p4.eta());
-            arbol.setLeaf<double>("gen_ld_vbf_quarks_phi",ld_vbf_quarks_p4.phi());
-            arbol.setLeaf<double>("gen_ld_vbf_quarks_mass",ld_vbf_quarks_p4.mass());
-            arbol.setLeaf<double>("gen_tr_vbf_quarks_pt",tr_vbf_quarks_p4.pt());
-            arbol.setLeaf<double>("gen_tr_vbf_quarks_eta",tr_vbf_quarks_p4.eta());
-            arbol.setLeaf<double>("gen_tr_vbf_quarks_phi",tr_vbf_quarks_p4.phi());
-            arbol.setLeaf<double>("gen_tr_vbf_quarks_mass",tr_vbf_quarks_p4.mass());
-
-
-            return true;
-        }
-    );
-    cutflow.insert("SemiMerged_SaveVariables", allWWH_products_identification_genlevel, Right);
 
     // //       mb try looking at GenPart_* print statements and look at the "status code" print out for each event only the GenPart that corresponds to nt.GenPart_status()[idx] == 22
     // //
@@ -507,6 +681,8 @@ std::cout << "ld_ww_idx: " << ld_ww_idx << ", tr_ww_idx: " << tr_ww_idx << std::
             arbol.setLeaf<double>("vqqjets_phi",(ld_vqqjet_p4 + tr_vqqjet_p4).phi());
             arbol.setLeaf<double>("vqqjets_mass",(ld_vqqjet_p4 + tr_vqqjet_p4).mass());
             arbol.setLeaf<double>("vqqjets_eta",(ld_vqqjet_p4 + tr_vqqjet_p4).eta());
+            arbol.setLeaf<double>("M_VVH_semimerged",(cutflow.globals.getVal<LorentzVector>("hbbfatjet_p4") +cutflow.globals.getVal<LorentzVector>("ld_vqqfatjet_p4")+cutflow.globals.getVal<LorentzVector>("ld_vqqjet_p4")+cutflow.globals.getVal<LorentzVector>("tr_vqqjet_p4")).pt());
+
             return true;
         }
     );
@@ -717,40 +893,40 @@ std::cout << "ld_ww_idx: " << ld_ww_idx << ", tr_ww_idx: " << tr_ww_idx << std::
 //         );
 //         cutflow.insert("SemiMerged_SaveVariables", ww_fermions, Right);
 
-    //truth tagging hbb
-    Cut* hbbfatjet_n_true_higgsbquark = new LambdaCut(
-            "Hbbfatjet_n_true_higgsbquark",
-            [&]()
-            {
-
-                LorentzVector higgsJetP4 = cutflow.globals.getVal<LorentzVector>("hbbfatjet_p4");
-                std::vector<LorentzVector> bQuarks;
-                int bQuarksInHiggsJet = 0;
-                for (unsigned int gen_i = 0; gen_i < nt.nGenPart(); gen_i++)
-                {
-                    int gen_pdgId=nt.GenPart_pdgId().at(gen_i);
-                    if (nt.GenPart_genPartIdxMother().at(gen_i)<0) {continue;}
-                    int gen_mother_pdgId=nt.GenPart_pdgId().at(nt.GenPart_genPartIdxMother().at(gen_i));
-                    if (abs(gen_pdgId)==5 && gen_mother_pdgId==25)
-                    {
-                        bQuarks.push_back(nt.GenPart_p4().at(gen_i));
-                    }
-                }
-                for (unsigned int i=0; i < bQuarks.size(); i++)
-                {
-                    double deltaR = ROOT::Math::VectorUtil::DeltaR(higgsJetP4,bQuarks.at(i));
-                    if (deltaR<0.8)
-                    {
-                        bQuarksInHiggsJet++;
-                    }
-                }
-                arbol.setLeaf<int>("bQuarksInHiggsJet",bQuarksInHiggsJet);
-                return true;
-
-
-            }
-        );
-        cutflow.insert("SemiMerged_SaveVariables", hbbfatjet_n_true_higgsbquark, Right);
+    //truth tagging hbb (commented out after running over the data 27jan 2024)
+    // Cut* hbbfatjet_n_true_higgsbquark = new LambdaCut(
+    //         "Hbbfatjet_n_true_higgsbquark",
+    //         [&]()
+    //         {
+    //
+    //             LorentzVector higgsJetP4 = cutflow.globals.getVal<LorentzVector>("hbbfatjet_p4");
+    //             std::vector<LorentzVector> bQuarks;
+    //             int bQuarksInHiggsJet = 0;
+    //             for (unsigned int gen_i = 0; gen_i < nt.nGenPart(); gen_i++)
+    //             {
+    //                 int gen_pdgId=nt.GenPart_pdgId().at(gen_i);
+    //                 if (nt.GenPart_genPartIdxMother().at(gen_i)<0) {continue;}
+    //                 int gen_mother_pdgId=nt.GenPart_pdgId().at(nt.GenPart_genPartIdxMother().at(gen_i));
+    //                 if (abs(gen_pdgId)==5 && gen_mother_pdgId==25)
+    //                 {
+    //                     bQuarks.push_back(nt.GenPart_p4().at(gen_i));
+    //                 }
+    //             }
+    //             for (unsigned int i=0; i < bQuarks.size(); i++)
+    //             {
+    //                 double deltaR = ROOT::Math::VectorUtil::DeltaR(higgsJetP4,bQuarks.at(i));
+    //                 if (deltaR<0.8)
+    //                 {
+    //                     bQuarksInHiggsJet++;
+    //                 }
+    //             }
+    //             arbol.setLeaf<int>("bQuarksInHiggsJet",bQuarksInHiggsJet);
+    //             return true;
+    //
+    //
+    //         }
+    //     );
+    //     cutflow.insert("SemiMerged_SaveVariables", hbbfatjet_n_true_higgsbquark, Right);
 
     // choosing hbbfatjet_n_true_higgsbquark to be equal to 0 to see the actual graphs without higgs
 
@@ -987,7 +1163,7 @@ std::cout << "ld_ww_idx: " << ld_ww_idx << ", tr_ww_idx: " << tr_ww_idx << std::
 //     	cutflow.insert("SemiMerged_SaveVariables", hggfatjet_n_true_higgsgluon, Right);
 //
 //     // choosing hggfatjet_n_true_higgsgluon to be equal to 0 to see the actual graphs without Higgs
-//
+//hbbfatjet_p4
 //     Cut* gluonsInHiggsJeteq0 = new LambdaCut(
 //     	"GluonsInHiggsJeteq0",
 //     	[&]()
@@ -1153,7 +1329,7 @@ std::cout << "ld_ww_idx: " << ld_ww_idx << ", tr_ww_idx: " << tr_ww_idx << std::
 
                 // Run cutflow
                 std::vector<std::string> cuts_to_check = {
-                    "SemiMerged_SaveVariables"
+                    "Cut2"
                 };
                 std::vector<bool> checkpoints = cutflow.run(cuts_to_check);
                 if (checkpoints.at(0)) { arbol.fill(); }

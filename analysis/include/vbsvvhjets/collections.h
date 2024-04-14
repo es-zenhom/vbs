@@ -27,7 +27,7 @@ struct Analysis : Core::Analysis
     PileUpJetIDSFs* puid_sfs;
     bool all_corrections;
 
-    Analysis(Arbol& arbol_ref, Nano& nt_ref, HEPCLI& cli_ref, Cutflow& cutflow_ref) 
+    Analysis(Arbol& arbol_ref, Nano& nt_ref, HEPCLI& cli_ref, Cutflow& cutflow_ref)
     : Core::Analysis(arbol_ref, nt_ref, cli_ref, cutflow_ref)
     {
         // W/Z fat jet globals
@@ -41,7 +41,10 @@ struct Analysis : Core::Analysis
         // Hbb jet globals
         cutflow.globals.newVar<LorentzVector>("hbbfatjet_p4");
         cutflow.globals.newVar<unsigned int>("hbbfatjet_gidx", 999); // idx in 'good' fatjets global vector
-
+        
+        // vvhqq globals
+        cutflow.globals.newVar<int>("ld_vqqjet_idx");
+        cutflow.globals.newVar<int>("tr_vqqjet_idx");
         // Scale factors
         jes = nullptr;
         lep_sfs = nullptr;
@@ -136,10 +139,10 @@ struct Analysis : Core::Analysis
 
         // Lepton veto
         Cut* no_leps = new LambdaCut(
-            "NoLeptons", 
-            [&]() 
-            { 
-                return cutflow.globals.getVal<LorentzVectors>("veto_lep_p4s").size() == 0; 
+            "NoLeptons",
+            [&]()
+            {
+                return cutflow.globals.getVal<LorentzVectors>("veto_lep_p4s").size() == 0;
             }
         );
         cutflow.insert(select_leps, no_leps, Right);
@@ -194,16 +197,16 @@ struct Analysis : Core::Analysis
             "AllMerged_detajjGt3", [&]() { return fabs(arbol.getLeaf<double>("deta_jj")) > 3; }
         );
         cutflow.insert(allmerged_Mjjgt500, allmerged_detajjgt3, Right);
-        
+
         // Preliminary cut tests
         Cut* allmerged_prelim_cut1 = new LambdaCut(
             "AllMerged_XbbGt0p9", [&]() { return arbol.getLeaf<double>("hbbfatjet_xbb") > 0.9; }
         );
         cutflow.insert(allmerged_detajjgt3, allmerged_prelim_cut1, Right);
         Cut* allmerged_prelim_cut2 = new LambdaCut(
-            "AllMerged_XVqqGt0p9", 
-            [&]() 
-            { 
+            "AllMerged_XVqqGt0p9",
+            [&]()
+            {
                 return (
                     arbol.getLeaf<double>("ld_vqqfatjet_xwqq") > 0.9
                     && arbol.getLeaf<double>("tr_vqqfatjet_xwqq") > 0.9
@@ -220,9 +223,9 @@ struct Analysis : Core::Analysis
         );
         cutflow.insert(allmerged_prelim_cut3, allmerged_prelim_cut4, Right);
         Cut* allmerged_prelim_cut5 = new LambdaCut(
-            "AllMerged_VqqMSDLt120", 
-            [&]() 
-            { 
+            "AllMerged_VqqMSDLt120",
+            [&]()
+            {
                 return (
                     arbol.getLeaf<double>("ld_vqqfatjet_msoftdrop") < 120
                     && arbol.getLeaf<double>("tr_vqqfatjet_msoftdrop") < 120
@@ -252,17 +255,18 @@ struct Analysis : Core::Analysis
         );
         cutflow.insert(semimerged_select_jets, semimerged_geq4_jets, Right);
 
-        // VBS jet selection
-        Cut* semimerged_select_vbsjets = new Core::SelectVBSJets("SemiMerged_SelectVBSJets", *this);
-        cutflow.insert(semimerged_geq4_jets, semimerged_select_vbsjets, Right);
-
         // V --> qq jet candidate selection
         Cut* semimerged_select_vjets = new SelectVJets("SemiMerged_SelectVJets", *this);
-        cutflow.insert(semimerged_select_vbsjets, semimerged_select_vjets, Right);
+        cutflow.insert(semimerged_geq4_jets, semimerged_select_vjets, Right);
+
+        // VBS jet selection
+        Cut* semimerged_select_vbsjets = new Core::SelectVBSJets("SemiMerged_SelectVBSJets", *this);
+        cutflow.insert(semimerged_select_vjets, semimerged_select_vbsjets, Right);
 
         // Save analysis variables
         Cut* semimerged_save_vars = new SaveVariables("SemiMerged_SaveVariables", *this, SemiMerged);
-        cutflow.insert(semimerged_select_vjets, semimerged_save_vars, Right);
+        cutflow.insert(semimerged_select_vbsjets, semimerged_save_vars, Right);
+
 
         // Basic VBS jet requirements
         Cut* semimerged_Mjjgt500 = new LambdaCut(
@@ -273,7 +277,7 @@ struct Analysis : Core::Analysis
             "SemiMerged_detajjGt3", [&]() { return fabs(arbol.getLeaf<double>("deta_jj")) > 3; }
         );
         cutflow.insert(semimerged_Mjjgt500, semimerged_detajjgt3, Right);
-        
+
         // Preliminary cut tests
         Cut* semimerged_prelim_cut1 = new LambdaCut(
             "SemiMerged_XbbGt0p9", [&]() { return arbol.getLeaf<double>("hbbfatjet_xbb") > 0.9; }
